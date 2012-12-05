@@ -23,33 +23,26 @@
 
 package jp.nak2k.example.spring.context;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author Kengo Nakatsuka <kengo.nakatsuka@gmail.com>
  * 
  */
-public class ContextExample {
-	public ApplicationContext loadContext() {
-		ApplicationContext context = new ClassPathXmlApplicationContext(
-				"jp/nak2k/example/spring/context/application.xml");
-		return context;
-	}
-
+@Configuration
+public class Config {
 	/**
-	 * Java のクラスで定義した bean 定義を読み込みます。
+	 * foo という名前の bean 定義です。
 	 * <p>
-	 * ここでは {@link Configuration} アノテーションをつけている {@link Config} クラスが定義として読み込まれます。
-	 * {@link Configuration} アノテーションを使う場合、 cglib.jar が必要です。
+	 * {@link Bean} アノテーションで名前を与えていないので、メソッド名がそのまま bean 名となります。
 	 * 
 	 * @return
 	 */
-	public ApplicationContext loadContextFromJava() {
-		ApplicationContext context = new AnnotationConfigApplicationContext(
-				ContextExample.class.getPackage().getName());
-		return context;
+	@Bean
+	public Foo foo() {
+		Foo foo = new Foo();
+		foo.setFoo(456);
+		return foo;
 	}
 }

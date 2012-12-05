@@ -42,4 +42,12 @@ public class ContextExampleTest {
 		Assert.assertEquals(123, foo.getFoo());
 	}
 
+	@Test
+	public void testLoadContextFromJava() {
+		ContextExample example = new ContextExample();
+
+		ApplicationContext context = example.loadContextFromJava();
+		Foo foo = (Foo) context.getBean("foo");
+		Assert.assertEquals(456, foo.getFoo());
+	}
 }
