@@ -7,6 +7,14 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>java-example</name>
 	<url>https://github.com/nak2k/java-example</url>
+
+	<repositories>
+		<repository>
+			<id>swt repo</id>
+			<url>http://swt-maven.googlecode.com/git-history/master/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -35,7 +43,13 @@
 			<version>2.2.2</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>${swt.groupId}</groupId>
+			<artifactId>${swt.artifactId}</artifactId>
+			<version>${swt.version}</version>
+		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -51,4 +65,33 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>mac</id>
+			<activation>
+				<os>
+					<name>mac os x</name>
+				</os>
+			</activation>
+			<properties>
+				<swt.groupId>org.eclipse.swt</swt.groupId>
+				<swt.artifactId>org.eclipse.swt.cocoa.macosx.x86_64</swt.artifactId>
+				<swt.version>4.2.1</swt.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<swt.groupId>org.eclipse.swt</swt.groupId>
+				<swt.artifactId>org.eclipse.swt.win32.win32.x86</swt.artifactId>
+				<swt.version>4.2.1</swt.version>
+			</properties>
+		</profile>
+	</profiles>
 </project>
