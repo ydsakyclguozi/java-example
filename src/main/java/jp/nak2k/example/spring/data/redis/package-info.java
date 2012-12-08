@@ -21,42 +21,8 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package jp.nak2k.example.spring.context;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-
 /**
  * @author Kengo Nakatsuka <kengo.nakatsuka@gmail.com>
- * 
+ *
  */
-public class ContextExampleTest {
-
-	@Test
-	public void testLoadContext() {
-		ContextExample example = new ContextExample();
-
-		ApplicationContext context = example.loadContext();
-		Foo foo = (Foo) context.getBean("foo");
-		Assert.assertEquals(123, foo.getFoo());
-	}
-
-	@Test
-	public void testLoadContext2() {
-		ContextExample example = new ContextExample();
-
-		ApplicationContext context = example.loadContext2();
-		Foo foo = (Foo) context.getBean("foo");
-		Assert.assertEquals(123, foo.getFoo());
-	}
-
-	@Test
-	public void testLoadContextFromJava() {
-		ContextExample example = new ContextExample();
-
-		ApplicationContext context = example.loadContextFromJava();
-		Foo foo = (Foo) context.getBean("foo");
-		Assert.assertEquals(456, foo.getFoo());
-	}
-}
+package jp.nak2k.example.spring.data.redis;

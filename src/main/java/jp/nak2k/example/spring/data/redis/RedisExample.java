@@ -21,53 +21,67 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package jp.nak2k.example.spring.context;
+package jp.nak2k.example.spring.data.redis;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.util.Assert;
 
 /**
  * @author Kengo Nakatsuka <kengo.nakatsuka@gmail.com>
  * 
  */
-public class ContextExample {
+public class RedisExample implements InitializingBean {
+	private RedisTemplate<String, String> redisTemplate;
+
 	/**
-	 * Bean 定義のXMLファイルを読み込みます。
 	 * 
-	 * @return
 	 */
-	public ApplicationContext loadContext() {
-		ApplicationContext context = new ClassPathXmlApplicationContext(
-				"jp/nak2k/example/spring/context/application.xml");
-		return context;
+	public void run() {
+		ValueOperations<String, String> opsForValue = redisTemplate
+				.opsForValue();
+
+		opsForValue.set(RedisExample.class.getName(), "Example message.");
 	}
 
 	/**
-	 * Bean 定義のXMLファイルを読み込みます。
-	 * <p>
-	 * 定義ファイルの位置をこのクラスを基準に指定します。
-	 * 
-	 * @return
+	 * @param args
 	 */
-	public ApplicationContext loadContext2() {
+	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext(
-				"application.xml", ContextExample.class);
-		return context;
+				"application.xml", RedisExample.class);
+
+		RedisExample redisExample = (RedisExample) context
+				.getBean("redisExample");
+		redisExample.run();
 	}
 
 	/**
-	 * Java のクラスで定義した bean 定義を読み込みます。
-	 * <p>
-	 * ここでは {@link Configuration} アノテーションをつけている {@link Config} クラスが定義として読み込まれます。
-	 * {@link Configuration} アノテーションを使う場合、 cglib.jar が必要です。
-	 * 
-	 * @return
+	 * @return the redisTemplate
 	 */
-	public ApplicationContext loadContextFromJava() {
-		ApplicationContext context = new AnnotationConfigApplicationContext(
-				ContextExample.class.getPackage().getName());
-		return context;
+	public RedisTemplate<String, String> getRedisTemplate() {
+		return redisTemplate;
 	}
+
+	/**
+	 * @param redisTemplate
+	 *            the redisTemplate to set
+	 */
+	public void setRedisTemplate(RedisTemplate<String, String> redisTemplate) {
+		this.redisTemplate = redisTemplate;
+	}
+
+	/*
+	 * 
+	 * @see
+	 * org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+	 */
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		Assert.notNull(redisTemplate, "redisTemplate must not be null.");
+	}
+
 }
